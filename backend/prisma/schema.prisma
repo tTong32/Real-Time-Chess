@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String    @map("password_hash")
+  emailVerified Boolean   @default(false) @map("email_verified")
+  verificationToken String? @map("verification_token")
+  elo           Int       @default(1000)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  gamesAsWhite  Game[]    @relation("WhitePlayer")
+  gamesAsBlack  Game[]    @relation("BlackPlayer")
+  moves         Move[]
+  customBoards  CustomBoard[]
+  sentFriendships    Friendship[] @relation("Sender")
+  receivedFriendships Friendship[] @relation("Receiver")
+
+  @@map("users")
+}
+
+model Game {
+  id          String   @id @default(uuid())
+  whiteId     String   @map("white_id")
+  blackId     String   @map("black_id")
+  status      GameStatus @default(WAITING)
+  winnerId    String?  @map("winner_id")
+  roomCode    String?  @unique @map("room_code")
+  isRated     Boolean  @default(false) @map("is_rated")
+  startedAt   DateTime? @map("started_at")
+  endedAt     DateTime? @map("ended_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Game state (JSON)
+  boardState  Json     @map("board_state")
+  whiteState  Json     @map("white_state") // { energy, regenRate, cooldowns }
+  blackState  Json     @map("black_state")
+  lastMoveAt  DateTime? @map("last_move_at")
+
+  // Relations
+  white       User     @relation("WhitePlayer", fields: [whiteId], references: [id])
+  black       User     @relation("BlackPlayer", fields: [blackId], references: [id])
+  moves       Move[]
+
+  @@index([status])
+  @@index([roomCode])
+  @@map("games")
+}
+
+enum GameStatus {
+  WAITING
+  ACTIVE
+  PAUSED
+  FINISHED
+  ABANDONED
+}
+
+model Move {
+  id          String   @id @default(uuid())
+  gameId      String   @map("game_id")
+  playerId    String   @map("player_id")
+  fromRow     Int      @map("from_row")
+  fromCol     Int      @map("from_col")
+  toRow       Int      @map("to_row")
+  toCol       Int      @map("to_col")
+  pieceType   String   @map("piece_type")
+  energyCost  Int      @map("energy_cost")
+  timestamp   DateTime @default(now())
+  capturedPiece String? @map("captured_piece")
+
+  // Relations
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  player      User     @relation(fields: [playerId], references: [id])
+
+  @@index([gameId])
+  @@index([playerId])
+  @@map("moves")
+}
+
+model CustomBoard {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  name        String
+  boardData   Json     @map("board_data") // Array of piece positions
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("custom_boards")
+}
+
+model Friendship {
+  id          String   @id @default(uuid())
+  senderId    String   @map("sender_id")
+  receiverId  String   @map("receiver_id")
+  status      FriendshipStatus @default(PENDING)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  sender      User     @relation("Sender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User     @relation("Receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("friendships")
+}
+
+enum FriendshipStatus {
+  PENDING
+  ACCEPTED
+  BLOCKED
+}
+
