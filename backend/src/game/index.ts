@@ -46,3 +46,6 @@ export {
 // Board class
 export { Board } from './Board';
 
+// MoveValidator class
+export { MoveValidator, type MoveValidationResult } from './MoveValidator';
+
