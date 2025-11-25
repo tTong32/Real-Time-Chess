@@ -43,3 +43,6 @@ export {
   validateCustomBoard,
 } from './constraints';
 
+// Board class
+export { Board } from './Board';
+
