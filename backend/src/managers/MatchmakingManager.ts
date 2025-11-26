@@ -32,6 +32,11 @@ export interface QueueResult {
 }
 
 /**
+ * Callback type for match notifications
+ */
+export type MatchFoundCallback = (player1Id: string, player2Id: string, gameId: string) => void;
+
+/**
  * MatchmakingManager handles ELO-based matchmaking for rated games
  * - Maintains a queue of players waiting for matches
  * - Matches players based on ELO rating similarity
@@ -46,9 +51,34 @@ export class MatchmakingManager {
   private eloRangeExpansionInterval: number = 1000 * 30; // 30 seconds
   private matchingInterval: NodeJS.Timeout | null = null;
   private readonly MATCHING_CHECK_INTERVAL = 1000; // Check for matches every second
+  private matchFoundCallbacks: MatchFoundCallback[] = [];
 
   constructor() {
     this.startMatchingLoop();
+  }
+
+  /**
+   * Register a callback to be called when matches are found
+   * @param callback - Callback function
+   */
+  onMatchFound(callback: MatchFoundCallback): void {
+    this.matchFoundCallbacks.push(callback);
+  }
+
+  /**
+   * Notify all registered callbacks of a match
+   * @param player1Id - First player ID
+   * @param player2Id - Second player ID
+   * @param gameId - Game ID
+   */
+  private notifyMatchFound(player1Id: string, player2Id: string, gameId: string): void {
+    for (const callback of this.matchFoundCallbacks) {
+      try {
+        callback(player1Id, player2Id, gameId);
+      } catch (error) {
+        console.error('Error in match found callback:', error);
+      }
+    }
   }
 
   /**
@@ -212,6 +242,9 @@ export class MatchmakingManager {
     // Remove both players from queue
     this.queue.delete(userId);
     this.queue.delete(bestMatch.userId);
+
+    // Notify callbacks
+    this.notifyMatchFound(userId, bestMatch.userId, gameId);
 
     return {
       matched: true,

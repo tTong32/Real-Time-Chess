@@ -5,6 +5,7 @@ import { config } from './config/environment';
 import { errorHandler } from './utils/errors';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
+import { setupSocket } from './socket';
 
 const app = express();
 const httpServer = createServer(app);
@@ -35,6 +36,9 @@ app.use((req, res) => {
 // Error handler (must be last)
 app.use(errorHandler);
 
+// Setup Socket.IO
+const io = setupSocket(httpServer);
+
 // Start server
 const PORT = config.port;
 
@@ -42,6 +46,7 @@ httpServer.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${config.nodeEnv}`);
   console.log(`CORS Origin: ${config.corsOrigin}`);
+  console.log('Socket.IO server initialized');
 });
 
 // Graceful shutdown
