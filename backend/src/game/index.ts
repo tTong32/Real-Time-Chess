@@ -55,3 +55,6 @@ export { EnergyManager } from './EnergyManager';
 // CooldownManager class
 export { CooldownManager } from './CooldownManager';
 
+// GameEngine class
+export { GameEngine } from './GameEngine';
+

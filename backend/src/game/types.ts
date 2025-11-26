@@ -52,6 +52,8 @@ export interface GameState {
   board: (Piece | null)[][]; // 8x8 board
   whiteState: PlayerState;
   blackState: PlayerState;
+  whitePlayerId?: string; // ID of white player
+  blackPlayerId?: string; // ID of black player
   currentTurn: PieceColor | null; // null for real-time gameplay
   status: 'waiting' | 'active' | 'paused' | 'finished';
   winner: PieceColor | null;
