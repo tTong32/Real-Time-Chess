@@ -49,3 +49,9 @@ export { Board } from './Board';
 // MoveValidator class
 export { MoveValidator, type MoveValidationResult } from './MoveValidator';
 
+// EnergyManager class
+export { EnergyManager } from './EnergyManager';
+
+// CooldownManager class
+export { CooldownManager } from './CooldownManager';
+
