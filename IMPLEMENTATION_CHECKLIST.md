@@ -35,7 +35,7 @@
 - [ ] Create Piece types and constants
 - [ ] Implement Board class
 - [ ] Implement MoveValidator class
-  - [ ] Standard chess piece moves
+  - [ ] Standard chess piece movges
   - [ ] Custom piece moves (Twisted Pawn, etc.)
   - [ ] Path validation
 - [ ] Implement EnergyManager
