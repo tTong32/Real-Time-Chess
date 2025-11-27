@@ -95,3 +95,152 @@ body {
   transform: rotate(180deg);
 }
 
+.square-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Possible move indicator */
+.square-possible-move {
+  position: relative;
+}
+
+.square-possible-move::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.square-possible-move:has(.piece)::after {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: 3px solid rgba(255, 255, 0, 0.6);
+  background-color: transparent;
+}
+
+/* Last move highlighting */
+.square-last-move {
+  background-color: rgba(255, 255, 0, 0.3) !important;
+}
+
+/* Energy Bar Styles */
+.energy-bar {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #f3f4f6;
+  margin: 0.5rem 0;
+}
+
+.energy-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.energy-label {
+  font-weight: 600;
+}
+
+.energy-value {
+  font-weight: 700;
+}
+
+.energy-regen {
+  color: #10b981;
+  font-size: 0.75rem;
+}
+
+.energy-bar-fill {
+  height: 1rem;
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.energy-white .energy-bar-fill {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.energy-black .energy-bar-fill {
+  background: linear-gradient(90deg, #1f2937, #4b5563);
+}
+
+.energy-low .energy-bar-fill {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Cooldown Indicator Styles */
+.cooldown-indicator {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  pointer-events: none;
+  user-select: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.cooldown-timer {
+  text-align: center;
+}
+
+/* Game Status Styles */
+.game-status {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.status-message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.status-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.status-winner {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.status-won {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-lost {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
