@@ -244,3 +244,215 @@ body {
   color: #991b1b;
 }
 
+/* Piece Cooldown List Styles */
+.cooldown-list {
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  min-height: 100px;
+}
+
+.cooldown-list-header {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.cooldown-list-empty {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.cooldown-list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cooldown-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: white;
+  border-radius: 0.25rem;
+  border-left: 3px solid #f59e0b;
+}
+
+.cooldown-piece-name {
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.cooldown-time {
+  font-weight: 700;
+  color: #f59e0b;
+  font-size: 0.875rem;
+}
+
+/* Energy Regeneration Display Styles */
+.energy-regen-display {
+  padding: 0.75rem;
+  background-color: #f0fdf4;
+  border-radius: 0.5rem;
+  border: 1px solid #86efac;
+  margin: 0.5rem 0;
+}
+
+.energy-regen-rate {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.regen-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #16a34a;
+}
+
+.regen-unit {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.energy-regen-status {
+  font-size: 0.875rem;
+  color: #16a34a;
+  font-weight: 500;
+}
+
+.energy-regen-progress {
+  margin-top: 0.5rem;
+}
+
+.regen-progress-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.regen-progress-bar {
+  height: 0.5rem;
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.regen-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  transition: width 0.3s ease;
+  border-radius: 0.25rem;
+}
+
+/* Move Validation Feedback Styles */
+.move-validation-feedback {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.validation-valid {
+  background-color: #d1fae5;
+  border: 1px solid #86efac;
+  color: #065f46;
+}
+
+.validation-invalid {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+.validation-message {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.validation-warning {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  opacity: 0.9;
+}
+
+/* Illegal Move Warning Styles */
+.illegal-move-warning {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #fef2f2;
+  border: 2px solid #f87171;
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+.warning-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.warning-icon {
+  font-size: 1.25rem;
+}
+
+.warning-message {
+  font-weight: 600;
+  color: #991b1b;
+  font-size: 0.875rem;
+}
+
+.warning-dismiss {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #991b1b;
+  cursor: pointer;
+  padding: 0 0.5rem;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.warning-dismiss:hover {
+  opacity: 1;
+}
+
+.warning-dismiss:focus {
+  outline: 2px solid #991b1b;
+  outline-offset: 2px;
+}
+
