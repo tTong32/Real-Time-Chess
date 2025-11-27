@@ -1,6 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { LoadingSpinner } from '../components/LoadingSpinner';
+import { AnimatedTransition } from '../components/AnimatedTransition';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -106,9 +108,11 @@ export const Login = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center items-center gap-2 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              aria-busy={isSubmitting}
             >
-              {isSubmitting ? 'Logging in...' : 'Sign in'}
+              {isSubmitting && <LoadingSpinner size="small" className="spinner-white" />}
+              <span>{isSubmitting ? 'Logging in...' : 'Sign in'}</span>
             </button>
           </div>
 

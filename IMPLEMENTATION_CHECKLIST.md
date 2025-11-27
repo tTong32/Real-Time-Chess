@@ -209,10 +209,10 @@
 - [ ] Dark mode (optional)
 
 ### Testing
-- [ ] End-to-end tests
-- [ ] Integration tests
-- [ ] Load testing
-- [ ] Security testing
+- [x] End-to-end tests (Playwright setup with auth, matchmaking, accessibility tests)
+- [x] Integration tests (API and Socket.IO integration tests)
+- [x] Load testing (k6 setup with basic HTTP and WebSocket tests)
+- [x] Security testing (Authentication security tests)
 
 ---
 

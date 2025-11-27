@@ -1,0 +1,32 @@
+{
+  "name": "real-time-chess",
+  "version": "1.0.0",
+  "description": "A real-time strategy chess game where players can move pieces simultaneously with cooldowns and energy management.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "npm run test:unit:frontend && npm run test:unit:backend",
+    "test:unit:frontend": "cd frontend && npm test -- --run",
+    "test:unit:backend": "cd backend && npm test -- --run",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:integration": "cd backend && npm test -- src/tests/integration --run",
+    "test:security": "cd backend && npm test -- src/tests/security --run",
+    "test:load": "k6 run load-tests/k6-basic.js",
+    "test:load:socket": "k6 run load-tests/k6-socket.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tTong32/Real-Time-Chess.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tTong32/Real-Time-Chess/issues"
+  },
+  "homepage": "https://github.com/tTong32/Real-Time-Chess#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0"
+  }
+}

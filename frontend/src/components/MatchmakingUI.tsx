@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../contexts/SocketContext';
-
-export const MatchmakingUI: React.FC = () => {
-  const socket = useSocket();
-  const [isSearching, setIsSearching] = useState(false);
-  const [queueSize, setQueueSize] = useState<number | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [matchFound, setMatchFound] = useState(false);
+import { LoadingSpinner } from './LoadingSpinner';
+import { AnimatedTransition } from './AnimatedTransition';
 
   useEffect(() => {
     if (!socket) return;
@@ -89,45 +84,57 @@ export const MatchmakingUI: React.FC = () => {
   if (matchFound) {
     return (
       <div className="matchmaking-ui" data-testid="matchmaking-ui">
-        <div className="matchmaking-status matchmaking-success">
-          <p>Match found! Starting game...</p>
-        </div>
+        <AnimatedTransition show={true} animation="fade">
+          <div className="matchmaking-status matchmaking-success" role="status" aria-live="polite">
+            <p>Match found! Starting game...</p>
+          </div>
+        </AnimatedTransition>
       </div>
     );
   }
 
   return (
     <div className="matchmaking-ui" data-testid="matchmaking-ui">
-      {error && (
-        <div className="matchmaking-error" role="alert">
-          {error}
-        </div>
-      )}
+      <AnimatedTransition show={!!error} animation="slide">
+        {error && (
+          <div className="matchmaking-error" role="alert" aria-live="assertive">
+            {error}
+          </div>
+        )}
+      </AnimatedTransition>
 
       {isSearching ? (
-        <div className="matchmaking-searching">
-          <div className="matchmaking-status">
-            <p>Searching for opponent...</p>
-            {queueSize !== null && (
-              <p className="queue-size">{queueSize} player{queueSize !== 1 ? 's' : ''} in queue</p>
-            )}
+        <AnimatedTransition show={true} animation="fade">
+          <div className="matchmaking-searching">
+            <div className="matchmaking-status">
+              <LoadingSpinner size="small" label="Searching for opponent..." />
+              {queueSize !== null && (
+                <p className="queue-size" aria-live="polite">
+                  {queueSize} player{queueSize !== 1 ? 's' : ''} in queue
+                </p>
+              )}
+            </div>
+            <button
+              className="matchmaking-button matchmaking-cancel"
+              onClick={handleCancel}
+              disabled={!socket.connected}
+              aria-label="Cancel matchmaking search"
+            >
+              Cancel
+            </button>
           </div>
-          <button
-            className="matchmaking-button matchmaking-cancel"
-            onClick={handleCancel}
-            disabled={!socket.connected}
-          >
-            Cancel
-          </button>
-        </div>
+        </AnimatedTransition>
       ) : (
-        <button
-          className="matchmaking-button matchmaking-find"
-          onClick={handleFindMatch}
-          disabled={!socket.connected}
-        >
-          Find Match
-        </button>
+        <AnimatedTransition show={true} animation="scale">
+          <button
+            className="matchmaking-button matchmaking-find"
+            onClick={handleFindMatch}
+            disabled={!socket.connected}
+            aria-label="Find a match"
+          >
+            Find Match
+          </button>
+        </AnimatedTransition>
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import cors from 'cors';
 import { createServer } from 'http';
 import { config } from './config/environment';
 import { errorHandler } from './utils/errors';
+import { comprehensiveErrorHandler } from './utils/errorHandler';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
 import boardRoutes from './routes/boards';
@@ -38,7 +39,8 @@ app.use((req, res) => {
 });
 
 // Error handler (must be last)
-app.use(errorHandler);
+// Use comprehensive error handler for better error handling, logging, and user-friendly messages
+app.use(comprehensiveErrorHandler);
 
 // Setup Socket.IO
 const io = setupSocket(httpServer);

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGame } from '../contexts/GameContext';
 import { Piece } from '../contexts/GameContext';
 import { CooldownIndicator } from './CooldownIndicator';
+import { AnimatedTransition } from './AnimatedTransition';
 
 interface BoardProps {
   className?: string;
@@ -135,17 +136,33 @@ export const Board: React.FC<BoardProps> = ({ className = '' }) => {
         <button
           className={squareClasses}
           onClick={() => handleSquareClick(row, col)}
+          onKeyDown={(e) => {
+            // Keyboard navigation for accessibility
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleSquareClick(row, col);
+            }
+          }}
           data-row={row}
           data-col={col}
           data-selected={selected}
           aria-label={getSquareLabel(row, col)}
+          aria-pressed={selected}
           type="button"
         >
-          {pieceDisplay && (
-            <span className="piece" data-piece-type={piece?.type} data-piece-color={piece?.color}>
-              {pieceDisplay}
-            </span>
-          )}
+          <AnimatedTransition show={!!pieceDisplay} animation="scale" duration={150}>
+            {pieceDisplay && (
+              <span 
+                className="piece" 
+                data-piece-type={piece?.type} 
+                data-piece-color={piece?.color}
+                role="img"
+                aria-label={`${piece?.color} ${piece?.type}`}
+              >
+                {pieceDisplay}
+              </span>
+            )}
+          </AnimatedTransition>
           {possibleMove && !piece && (
             <span className="possible-move-indicator" aria-hidden="true" />
           )}
@@ -167,7 +184,14 @@ export const Board: React.FC<BoardProps> = ({ className = '' }) => {
   const shouldFlipBoard = isWhitePlayer === false;
 
   return (
-    <div className={`board ${className}`} data-flipped={shouldFlipBoard}>
+    <div 
+      className={`board ${className}`} 
+      data-flipped={shouldFlipBoard}
+      role="grid"
+      aria-label="Chess board"
+      aria-rowcount={8}
+      aria-colcount={8}
+    >
       <div className="board-grid">
         {Array.from({ length: 8 }, (_, row) =>
           Array.from({ length: 8 }, (_, col) => {

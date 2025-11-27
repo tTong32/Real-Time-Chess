@@ -51,10 +51,17 @@ body {
   background-color: #b58863;
 }
 
-.square:hover {
+.square:hover:not(:disabled) {
   opacity: 0.8;
   transform: scale(1.05);
   z-index: 1;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.square:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  z-index: 2;
 }
 
 .square-selected {
@@ -74,6 +81,11 @@ body {
   height: 100%;
   user-select: none;
   pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.piece:hover {
+  transform: scale(1.1);
 }
 
 .piece-white {
@@ -848,5 +860,286 @@ body {
 .spectate-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Loading Spinner Styles */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.spinner-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 9999;
+}
+
+.dark .spinner-fullscreen {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.spinner-circle {
+  position: relative;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #3b82f6;
+  animation: spin 1s linear infinite;
+}
+
+.spinner-small .spinner-circle {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-width: 2px;
+}
+
+.spinner-medium .spinner-circle {
+  width: 3rem;
+  height: 3rem;
+  border-width: 3px;
+}
+
+.spinner-large .spinner-circle {
+  width: 4rem;
+  height: 4rem;
+  border-width: 4px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.dark .spinner-label {
+  color: #9ca3af;
+}
+
+.spinner-white .spinner-circle {
+  border-top-color: white;
+}
+
+/* Animated Transition Styles */
+.animated-transition {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.animated-transition.fade {
+  opacity: 0;
+}
+
+.animated-transition.fade.enter {
+  opacity: 1;
+}
+
+.animated-transition.fade.exit {
+  opacity: 0;
+}
+
+.animated-transition.slide {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.animated-transition.slide.enter {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animated-transition.slide.exit {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.animated-transition.scale {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.animated-transition.scale.enter {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.animated-transition.scale.exit {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.theme-toggle:hover {
+  background-color: #e5e7eb;
+}
+
+.theme-toggle:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.dark .theme-toggle {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.dark .theme-toggle:hover {
+  background-color: #4b5563;
+}
+
+.theme-toggle-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.theme-toggle-label {
+  font-size: 0.875rem;
+}
+
+/* Responsive Design Improvements */
+@media (max-width: 640px) {
+  .board-grid {
+    width: min(95vw, 400px);
+    height: min(95vw, 400px);
+  }
+
+  .square {
+    font-size: clamp(1rem, 3vw, 2rem);
+  }
+
+  .matchmaking-ui,
+  .room-code-input,
+  .friend-challenge-ui,
+  .spectate-game-list {
+    padding: 1rem;
+  }
+
+  .energy-bar {
+    padding: 0.5rem;
+  }
+
+  .cooldown-list {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .board-grid {
+    width: min(90vw, 500px);
+    height: min(90vw, 500px);
+  }
+}
+
+/* Dark Mode Styles */
+.dark {
+  color-scheme: dark;
+}
+
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+.dark .board-grid {
+  border-color: #4b5563;
+}
+
+.dark .square-light {
+  background-color: #f0d9b5;
+}
+
+.dark .square-dark {
+  background-color: #b58863;
+}
+
+.dark .energy-bar {
+  background-color: #1f2937;
+}
+
+.dark .cooldown-list {
+  background-color: #1f2937;
+}
+
+.dark .matchmaking-ui,
+.dark .room-code-input,
+.dark .friend-challenge-ui,
+.dark .spectate-game-list {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+.dark .spectate-game-item {
+  background-color: #374151;
+  border-color: #4b5563;
+}
+
+.dark .cooldown-indicator {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* Accessibility Improvements */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
