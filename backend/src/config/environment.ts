@@ -15,5 +15,10 @@ export const config = {
     pass: process.env.EMAIL_PASS || '',
   },
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  sentry: {
+    dsn: process.env.SENTRY_DSN || '',
+    environment: process.env.NODE_ENV || 'development',
+    tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE || '0.1'),
+  },
 };
 

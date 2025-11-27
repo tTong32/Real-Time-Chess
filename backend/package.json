@@ -23,13 +23,16 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.7.1",
+    "@sentry/node": "^7.120.4",
+    "@sentry/profiling-node": "^7.120.4",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.7",
-    "socket.io": "^4.5.4"
+    "socket.io": "^4.5.4",
+    "winston": "^3.18.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -39,6 +42,7 @@
     "@types/node": "^20.10.5",
     "@types/nodemailer": "^6.4.14",
     "@types/supertest": "^6.0.3",
+    "@types/winston": "^2.4.4",
     "@vitest/coverage-v8": "^1.1.0",
     "prisma": "^5.7.1",
     "supertest": "^7.1.4",
