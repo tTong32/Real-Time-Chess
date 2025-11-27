@@ -14,7 +14,11 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio"
   },
-  "keywords": ["chess", "realtime", "game"],
+  "keywords": [
+    "chess",
+    "realtime",
+    "game"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -34,11 +38,12 @@
     "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20.10.5",
     "@types/nodemailer": "^6.4.14",
+    "@types/supertest": "^6.0.3",
     "@vitest/coverage-v8": "^1.1.0",
     "prisma": "^5.7.1",
+    "supertest": "^7.1.4",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vitest": "^1.1.0"
   }
 }
-

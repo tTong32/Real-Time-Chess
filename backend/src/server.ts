@@ -5,6 +5,7 @@ import { config } from './config/environment';
 import { errorHandler } from './utils/errors';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
+import boardRoutes from './routes/boards';
 import { setupSocket } from './socket';
 
 const app = express();
@@ -27,6 +28,7 @@ app.get('/health', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/boards', boardRoutes);
 
 // 404 handler
 app.use((req, res) => {
