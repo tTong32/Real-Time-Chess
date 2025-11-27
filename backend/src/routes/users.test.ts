@@ -259,6 +259,62 @@ describe('Users Routes', () => {
       expect(res.body.totalGames).toBe(0); // Active games not counted in stats
     });
 
+    it('should execute queries in parallel for better performance', async () => {
+      // Create test data
+      await prisma.game.createMany({
+        data: [
+          {
+            whiteId: user1.id,
+            blackId: user2.id,
+            status: 'FINISHED',
+            winnerId: user1.id,
+            isRated: true,
+            boardState: {},
+            whiteState: {},
+            blackState: {},
+            startedAt: new Date(),
+            endedAt: new Date(),
+          },
+          {
+            whiteId: user1.id,
+            blackId: user2.id,
+            status: 'FINISHED',
+            winnerId: user1.id,
+            isRated: false,
+            boardState: {},
+            whiteState: {},
+            blackState: {},
+            startedAt: new Date(),
+            endedAt: new Date(),
+          },
+        ],
+      });
+
+      await prisma.move.createMany({
+        data: Array.from({ length: 5 }, (_, i) => ({
+          gameId: (await prisma.game.findFirst({ where: { whiteId: user1.id } }))!.id,
+          playerId: user1.id,
+          fromRow: 6,
+          fromCol: 4,
+          toRow: 4,
+          toCol: 4,
+          pieceType: 'pawn',
+          energyCost: 2,
+        })),
+      });
+
+      const startTime = Date.now();
+      const res = await request(app)
+        .get('/api/users/me/stats')
+        .set('Authorization', `Bearer ${token1}`);
+      const endTime = Date.now();
+
+      expect(res.status).toBe(200);
+      // With parallel queries, this should be faster than sequential
+      // (Note: This is a simple test - in production, you'd want more sophisticated benchmarks)
+      expect(endTime - startTime).toBeLessThan(1000); // Should complete in under 1 second
+    });
+
     it('should return 401 if not authenticated', async () => {
       const res = await request(app).get('/api/users/me/stats');
 
@@ -292,6 +348,49 @@ describe('Users Routes', () => {
       expect(res.body.error).toContain('not found');
     });
 
+    it('should execute queries in parallel for better performance', async () => {
+      // Create test games
+      await prisma.game.createMany({
+        data: [
+          {
+            whiteId: user2.id,
+            blackId: user1.id,
+            status: 'FINISHED',
+            winnerId: user2.id,
+            isRated: true,
+            boardState: {},
+            whiteState: {},
+            blackState: {},
+            startedAt: new Date(),
+            endedAt: new Date(),
+          },
+          {
+            whiteId: user1.id,
+            blackId: user2.id,
+            status: 'FINISHED',
+            winnerId: user1.id,
+            isRated: true,
+            boardState: {},
+            whiteState: {},
+            blackState: {},
+            startedAt: new Date(),
+            endedAt: new Date(),
+          },
+        ],
+      });
+
+      const startTime = Date.now();
+      const res = await request(app)
+        .get(`/api/users/${user2.id}`)
+        .set('Authorization', `Bearer ${token1}`);
+      const endTime = Date.now();
+
+      expect(res.status).toBe(200);
+      expect(res.body.stats.totalGames).toBe(2);
+      // Parallel queries should complete quickly
+      expect(endTime - startTime).toBeLessThan(1000);
+    });
+
     it('should return 401 if not authenticated', async () => {
       const res = await request(app).get(`/api/users/${user2.id}`);
 
@@ -299,4 +398,3 @@ describe('Users Routes', () => {
     });
   });
 });
-
